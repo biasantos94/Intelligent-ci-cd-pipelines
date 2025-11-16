@@ -1,0 +1,115 @@
+<html>
+  <head>
+    <title>Livros da FIAP</title>
+
+    <style>
+      body {
+        font-family: Arial;
+        background: #f5f5f5;
+        padding: 20px;
+      }
+
+      h1 {
+        text-align: center;
+        color: #d6001c; /* vermelho FIAP */
+      }
+
+      .container {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .card {
+        background: white;
+        width: 250px;
+        border-radius: 4px;
+        padding: 15px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        border-top: 5px solid #d6001c;
+      }
+
+      .titulo {
+        font-size: 18px;
+        font-weight: bold;
+        color: #333;
+      }
+
+      .autor {
+        font-size: 14px;
+        color: #777;
+        margin-bottom: 10px;
+      }
+
+      .descricao {
+        font-size: 14px;
+        margin-bottom: 10px;
+      }
+
+      button {
+        width: 100%;
+        padding: 10px;
+        background: #d6001c;
+        border: none;
+        color: white;
+        cursor: pointer;
+        font-size: 14px;
+        border-radius: 4px;
+      }
+
+      button:hover {
+        background: #a80015;
+      }
+
+      #mensagem {
+        margin-top: 20px;
+        text-align: center;
+        font-size: 16px;
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <h1>📚 Catálogo de Livros FIAP</h1>
+
+    <div class="container">
+
+      <div class="card">
+        <div class="titulo">Introdução à Tecnologia</div>
+        <div class="autor">Prof. Silva</div>
+        <div class="descricao">Fundamentos da TI moderna.</div>
+        <button onclick="comprar('Introdução à Tecnologia')">Comprar</button>
+      </div>
+
+      <div class="card">
+        <div class="titulo">Arquitetura de Software</div>
+        <div class="autor">Prof. Torres</div>
+        <div class="descricao">Padrões, boas práticas e arquitetura limpa.</div>
+        <button onclick="comprar('Arquitetura de Software')">Comprar</button>
+      </div>
+
+      <div class="card">
+        <div class="titulo">DevOps na Prática</div>
+        <div class="autor">Prof. Lima</div>
+        <div class="descricao">Automação, CI/CD e pipelines modernas.</div>
+        <button onclick="comprar('DevOps na Prática')">Comprar</button>
+      </div>
+
+    </div>
+
+    <p id="mensagem"></p>
+
+    <script>
+      function comprar(item) {
+        fetch("http://localhost:5000/comprar?item=" + item)
+          .then(r => r.json())
+          .then(d => document.getElementById("mensagem").innerText = d.message)
+          .catch(() => document.getElementById("mensagem").innerText = "Backend não está rodando.");
+      }
+    </script>
+
+  </body>
+</html>
+
