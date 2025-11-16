@@ -23,10 +23,10 @@ jobs:
       - name: Step 3 - Validar backend
         run: |
           echo "Testando backend..."
-          python - <<EOF
-from backend.app import app
-print("Backend importado com sucesso!")
-EOF
+          python - << 'EOF'
+          from backend.app import app
+          print("Backend importado com sucesso!")
+          EOF
 
       # STEP 4 — Build Docker do backend
       - name: Step 4 - Build Docker backend
