@@ -1,0 +1,15 @@
+<html>
+  <body>
+    <h1>Front-end funcionando</h1>
+    <button onclick="testar()">Testar API</button>
+    <p id="resposta"></p>
+
+    <script>
+      function testar() {
+        fetch("http://localhost:5000/status")
+            .then(r => r.json())
+            .then(d => document.getElementById("resposta").innerText = d.message);
+      }
+    </script>
+  </body>
+</html>
