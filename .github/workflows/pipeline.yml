@@ -1,0 +1,55 @@
+name: CI-CD-Lojinha
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest
+
+    steps:
+      # STEP 1 — Checkout do código (obrigatório)
+      - name: Step 1 - Checkout do repositório
+        uses: actions/checkout@v3
+
+      # STEP 2 — Instalar dependências do backend
+      - name: Step 2 - Instalar dependências do backend
+        run: |
+          cd backend
+          pip install flask
+
+      # STEP 3 — Validar backend (executar teste simples)
+      - name: Step 3 - Validar backend
+        run: |
+          echo "Testando backend..."
+          python - <<EOF
+from backend.app import app
+print("Backend importado com sucesso!")
+EOF
+
+      # STEP 4 — Build Docker do backend
+      - name: Step 4 - Build Docker backend
+        run: docker build -t lojinha-backend -f Dockerfile.back .
+
+      # STEP 5 — Build Docker do frontend
+      - name: Step 5 - Build Docker frontend
+        run: docker build -t lojinha-frontend -f Dockerfile.front .
+
+      # STEP 6 — Validar existência dos front files
+      - name: Step 6 - Validar frontend
+        run: |
+          test -f frontend/index.html
+          echo "Frontend encontrado com sucesso!"
+
+      # STEP 7 — Gerar artefatos (ZIP do projeto)
+      - name: Step 7 - Criar pacote da aplicação
+        run: |
+          zip -r lojinha.zip frontend backend docker-compose.yml Dockerfile.back Dockerfile.front
+
+      # STEP 8 — Upload dos artefatos na pipeline
+      - name: Step 8 - Upload build
+        uses: actions/upload-artifact@v3
+        with:
+          name: lojinha-build
+          path: lojinha.zip
